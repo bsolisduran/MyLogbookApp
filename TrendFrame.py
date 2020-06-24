@@ -69,7 +69,7 @@ class TrendFrame(tk.Frame):
 
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
-        plt.plot(range(len(years)), points, '-ks')
+        plt.plot(range(len(years)), points, '-k')
         plt.tick_params(
             axis='x', 
             which='both',

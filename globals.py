@@ -19,6 +19,11 @@ navBoldFont = ('Verdana', 12, 'bold')
 titleFont = ('Verdana', 14)
 rankingFont = ('Verdana', 20, 'bold')
 
+tableFont = ('Verdana', 12)
+table2Font = ('Verdana', 10)
+tableIFont = ('Verdana', 12, 'italic')
+tableBFont = ('Verdana', 12, 'bold')
+
 
 # Widths:
 bodyWidth = 1000

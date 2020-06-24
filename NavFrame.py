@@ -10,7 +10,7 @@ class NavFrame(tk.Frame):
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
 
-        navFrame = tk.Frame(self, bg=navGreyColor, width=200, height=1000)
+        navFrame = tk.Frame(self, bg=navGreyColor, width=200, height=500)
         navFrame.pack()
         navFrame.pack_propagate(0)
 
