@@ -6,6 +6,7 @@ from NavFrame import NavFrame
 from RankingFrame import RankingFrame
 from StatisticsFrame import StatisticsFrame
 from TrendFrame import TrendFrame
+from LogbookFrame import LogbookFrame
 
 
 class MainApplication(tk.Frame):
@@ -32,11 +33,14 @@ class MainApplication(tk.Frame):
         self.rankingbar = RankingFrame(self.frame)
         self.statsframe = StatisticsFrame(self.frame)
         self.trendframe = TrendFrame(self.frame)
+        self.logframe = LogbookFrame(self.frame)
 
-        self.navbar.grid(row=0, column=0, rowspan=3, sticky='ne')
+
+        self.navbar.grid(row=0, column=0, rowspan=4, sticky='ne')
         self.rankingbar.grid(row=0, column=1, padx=10, pady=10, sticky='nsew')
         self.statsframe.grid(row=1, column=1, padx=10, pady=10, sticky='nsew')
         self.trendframe.grid(row=2, column=1, padx=10, pady=10, sticky='nsew')
+        self.logframe.grid(row=3, column=1, padx=10, pady=10, sticky='nsew')
 
     def size_screen(self):
         width = self.winfo_screenwidth()
