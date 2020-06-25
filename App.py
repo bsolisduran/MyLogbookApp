@@ -26,20 +26,24 @@ class MainApplication(tk.Frame):
         self.canvas.create_window((4, 4), window=self.frame, anchor="nw",
                                   tags="self.frame")
         self.frame.bind("<Configure>", self.onFrameConfigure)
-        # self.canvas.bind('<MouseWheel>',self.canvas.yview)
+        self.canvas.bind("<Enter>",     lambda event: self.canvas.focus_set())
+        self.canvas.bind("<Up>",    lambda event: self.canvas.yview_scroll(-1, "units"))
+        self.canvas.bind("<Down>",  lambda event: self.canvas.yview_scroll( 1, "units"))
+
+        self.canvas.focus_set()
 
         # Main Widgets
         self.navbar = NavFrame(self.frame)
         self.rankingbar = RankingFrame(self.frame)
-        # self.statsframe = StatisticsFrame(self.frame)
-        # self.trendframe = TrendFrame(self.frame)
+        self.statsframe = StatisticsFrame(self.frame)
+        self.trendframe = TrendFrame(self.frame)
         self.logframe = LogbookFrame(self.frame)
 
 
         self.navbar.grid(row=0, column=0, rowspan=4, sticky='ne')
         self.rankingbar.grid(row=0, column=1, padx=10, pady=10, sticky='nsew')
-        # self.statsframe.grid(row=1, column=1, padx=10, pady=10, sticky='nsew')
-        # self.trendframe.grid(row=2, column=1, padx=10, pady=10, sticky='nsew')
+        self.statsframe.grid(row=1, column=1, padx=10, pady=10, sticky='nsew')
+        self.trendframe.grid(row=2, column=1, padx=10, pady=10, sticky='nsew')
         self.logframe.grid(row=3, column=1, padx=10, pady=10, sticky='nsew')
 
     def size_screen(self):
