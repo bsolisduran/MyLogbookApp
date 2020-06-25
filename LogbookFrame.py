@@ -21,7 +21,7 @@ class LogbookFrame(tk.Frame):
         dfObj = LogbookDataFrame("data/sentbook_8anu.csv")
         dataframe = dfObj.df
         dataframe = dataframe.sort_values(by='date', ascending=False)
-        dataframe = dataframe.head(20)
+        dataframe = dataframe.head(30)
 
         # Widgets in Navigation Frame:
         # -- Header Frame:
@@ -34,26 +34,31 @@ class LogbookFrame(tk.Frame):
         navFrame = tk.Frame(logbookFrame)
         navFrame.grid(row=1, column=0, sticky='nsew')
 
-        self.get_navFrame(navFrame, sortVar)
-
-        # -- Table Frame:
         tableFrame = tk.Frame(logbookFrame)
         tableFrame.grid(row=2, column=0, sticky='nsew')
 
+        self.get_navFrame(navFrame, sortVar, dataframe, tableFrame)
+
+        # -- Table Frame:
         self.get_log_table(tableFrame, sortVar.get(), dataframe)
 
-    def show_table(self, parent, variable):
-        print(variable)
+    def show_table(self, parent, variable, dataframe, table_parent):
+        for widget in table_parent.winfo_children():
+            widget.destroy()
+        
+        self.get_log_table(table_parent, variable, dataframe)
 
-    def get_navFrame(self, parent, variable):
+
+
+    def get_navFrame(self, parent, variable, df, table_parent):
         sortLabel = tk.Label(parent, text="Sort by: ", font=navFont)
         sortLabel.pack(side=tk.LEFT)
 
         gradeRb = tk.Radiobutton(parent, text='Grade ', variable=variable, value='byGrade', font=navFont,
-                                 command=lambda: self.show_table(parent, variable.get()))
+                                 command=lambda: self.show_table(parent, variable.get(), df, table_parent))
         dateRb = tk.Radiobutton(parent, text='Date ', variable=variable, value='byDate', font=navFont,
-                                command=lambda: self.show_table(parent, variable.get()))
-        gradeRb.pack(side=tk.LEFT, padx=10)
+                                command=lambda: self.show_table(parent, variable.get(), df, table_parent))
+        gradeRb.pack(side=tk.LEFT, padx=10, pady=10)
         dateRb.pack(side=tk.LEFT, padx=10)
 
     def get_table_header(self, parent, grade):

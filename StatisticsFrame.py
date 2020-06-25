@@ -40,7 +40,6 @@ class StatisticsFrame(tk.Frame):
         self.getRadioButtons(radioFrame, timeFilterVar, dfObj, tableFrame)
 
         # -- Table Frame:
-
         self.getStatisticsTable(tableFrame, statsData)
 
     def getRadioButtons(self, parent, variable, dataframeObject, TableParent):
