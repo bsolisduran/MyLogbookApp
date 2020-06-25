@@ -41,8 +41,8 @@ class MainApplication(tk.Frame):
 
         # Layout Main Widgets
         self.navbar.grid(row=0, column=0, rowspan=4, sticky='ne')
-        # self.rankingbar.grid(row=0, column=1, padx=10, pady=10, sticky='nsew')
-        # self.statsframe.grid(row=1, column=1, padx=10, pady=10, sticky='nsew')
+        self.rankingbar.grid(row=0, column=1, padx=10, pady=10, sticky='nsew')
+        self.statsframe.grid(row=1, column=1, padx=10, pady=10, sticky='nsew')
         self.trendframe.grid(row=2, column=1, padx=10, pady=10, sticky='nsew')
         self.logframe.grid(row=3, column=1, padx=10, pady=10, sticky='nsew')
 
