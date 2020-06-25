@@ -160,6 +160,10 @@ class LogbookDataFrame:
         
         return scoreRoutes
 
+    def get_grade_df(self, grade):
+        df = self.df
+        grade_dataframe = df[df["grade"] == grade]
+        return grade_dataframe
 
 
 

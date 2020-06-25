@@ -7,6 +7,8 @@ whiteColor = "#FFFFFF"
 OSColor = "#000000"
 FLColor = "#FFA500"
 RPColor = "#FF0000"
+darkGreyColor = '#babdc4'
+tblGreyColor = '#f2f4f8'
 
 # Fonts:
 headerFont = ('Verdana', 9)
