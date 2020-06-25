@@ -13,7 +13,7 @@ class StatisticsFrame(tk.Frame):
         self.parent = parent
 
         # Data needed (TODO, pass as an arg):
-        timeFilterVar = tk.StringVar(value='All Time')
+        self.timeFilterVar = tk.StringVar(value='All Time')
 
         dfObj = LogbookDataFrame("data/sentbook_8anu.csv")
         df = dfObj.df
@@ -34,12 +34,11 @@ class StatisticsFrame(tk.Frame):
         radioFrame = tk.Frame(statsFrame, bg=navGreyColor, height=100)
         radioFrame.grid(row=1, column=0, sticky='nsew', pady=5, padx=5)
 
+        # -- Table Frame:
         tableFrame = tk.Frame(statsFrame)
         tableFrame.grid(row=2, column=0, sticky='nsew')
 
-        self.getRadioButtons(radioFrame, timeFilterVar, dfObj, tableFrame)
-
-        # -- Table Frame:
+        self.getRadioButtons(radioFrame, self.timeFilterVar, dfObj, tableFrame)
         self.getStatisticsTable(tableFrame, statsData)
 
     def getRadioButtons(self, parent, variable, dataframeObject, TableParent):
@@ -175,3 +174,7 @@ class StatisticsFrame(tk.Frame):
             barLength = dataRow[1] / maxRoutesInAGrade * xcenter
             barCanvas.create_rectangle(xcenter - barLength, ycenter - 7, xcenter + barLength, ycenter + 7,
                                        fill=OSColor, outline=OSColor)
+
+
+    def get_timeFilterVar(self):
+        return self.timeFilterVar.get()

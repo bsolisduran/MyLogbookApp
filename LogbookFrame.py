@@ -7,9 +7,11 @@ from models.LogbookDataFrame import LogbookDataFrame
 
 class LogbookFrame(tk.Frame):
 
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, timeFilterVar, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
+        self.timeFilterVar = timeFilterVar
+        print(timeFilterVar)
 
         logbookFrame = tk.Frame(self, bg=navGreyColor,
                                 width=bodyWidth, height=400)
@@ -34,12 +36,11 @@ class LogbookFrame(tk.Frame):
         navFrame = tk.Frame(logbookFrame)
         navFrame.grid(row=1, column=0, sticky='nsew')
 
+        # -- Table Frame:
         tableFrame = tk.Frame(logbookFrame)
         tableFrame.grid(row=2, column=0, sticky='nsew')
 
         self.get_navFrame(navFrame, sortVar, dataframe, tableFrame)
-
-        # -- Table Frame:
         self.get_log_table(tableFrame, sortVar.get(), dataframe)
 
     def show_table(self, parent, variable, dataframe, table_parent):
@@ -60,6 +61,12 @@ class LogbookFrame(tk.Frame):
                                 command=lambda: self.show_table(parent, variable.get(), df, table_parent))
         gradeRb.pack(side=tk.LEFT, padx=10, pady=10)
         dateRb.pack(side=tk.LEFT, padx=10)
+
+        timeLabel = tk.Label(parent, text="     Time Filter: ", font=navFont)
+        timeLabel.pack(side=tk.LEFT)
+        filterText = self.timeFilterVar + " ascents"
+        filterLabel = tk.Label(parent, text=filterText, font=navFont)
+        filterLabel.pack(side=tk.LEFT)
 
     def get_table_header(self, parent, grade):
         if grade:

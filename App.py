@@ -36,8 +36,10 @@ class MainApplication(tk.Frame):
         self.navbar = NavFrame(self.frame)
         self.rankingbar = RankingFrame(self.frame)
         self.statsframe = StatisticsFrame(self.frame)
+        timeFilterVar = self.statsframe.get_timeFilterVar()
         self.trendframe = TrendFrame(self.frame)
-        self.logframe = LogbookFrame(self.frame)
+        self.logframe = LogbookFrame(self.frame, timeFilterVar)
+
 
         # Layout Main Widgets
         self.navbar.grid(row=0, column=0, rowspan=4, sticky='ne')
