@@ -115,6 +115,7 @@ class LogbookFrame(tk.Frame):
             endDate = dt.datetime(int(timeVar), 12, 31)
             dataframe = self.dfObj.get_yeardf(iniDate, endDate)
 
+        dataframe = dataframe.sort_values(by="date", ascending=False)
         variable = self.sortVar.get()
 
         if variable == 'byGrade':
@@ -136,6 +137,8 @@ class LogbookFrame(tk.Frame):
                             parent, routeIndex[route], row, grade=False, bg=bg)
                         row += 1
                         bg += 1
+            
+
         elif variable == 'byDate':
             self.get_table_header(parent, grade=True)
 
