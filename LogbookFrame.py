@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 from globals import *
 from models.HeaderFrame import HeaderFrame
@@ -11,6 +12,7 @@ class LogbookFrame(tk.Frame):
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
 
+        
         logbookFrame = tk.Frame(self, bg=navGreyColor,
                                 width=bodyWidth, height=400)
         logbookFrame.pack()
@@ -18,11 +20,12 @@ class LogbookFrame(tk.Frame):
         # Data:
         sortVar = tk.StringVar(value='byGrade')
 
-        dfObj = LogbookDataFrame("data/sentbook_8anu.csv")
-        dataframe = dfObj.df
-        dataframe = dataframe.sort_values(by='date', ascending=False)
-        dataframe = dataframe.head(30)
+        self.dfObj = LogbookDataFrame("data/sentbook_8anu.csv")
 
+        # dfObj = LogbookDataFrame("data/sentbook_8anu.csv")
+        # dataframe = dfObj.df
+        # dataframe = dataframe.sort_values(by='date', ascending=False)
+        # dataframe = dataframe.head(30)
         # Widgets in Navigation Frame:
         # -- Header Frame:
         headerText = "LOGBOOK "
@@ -38,27 +41,53 @@ class LogbookFrame(tk.Frame):
         tableFrame = tk.Frame(logbookFrame)
         tableFrame.grid(row=2, column=0, sticky='nsew')
 
-        self.get_navFrame(navFrame, sortVar, dataframe, tableFrame)
-        self.get_log_table(tableFrame, sortVar.get(), dataframe)
+        self.get_navFrame(navFrame, sortVar, tableFrame)
+        self.get_log_table(tableFrame, sortVar.get())
 
-    def show_table(self, parent, variable, dataframe, table_parent):
+    def show_table(self, parent, variable, table_parent, variableTime):
         for widget in table_parent.winfo_children():
             widget.destroy()
-        
-        self.get_log_table(table_parent, variable, dataframe)
+
+        dataframe = self.dfObj.df
+        self.get_log_table(table_parent, variable)
 
 
 
-    def get_navFrame(self, parent, variable, df, table_parent):
+    def get_navFrame(self, parent, variable, table_parent):
         sortLabel = tk.Label(parent, text="Sort by: ", font=navFont)
         sortLabel.pack(side=tk.LEFT)
 
+        df = self.dfObj.df
+        yearsList = self.dfObj.get_yearsList()
+
         gradeRb = tk.Radiobutton(parent, text='Grade ', variable=variable, value='byGrade', font=navFont,
-                                 command=lambda: self.show_table(parent, variable.get(), df, table_parent))
+                                 command=lambda: self.show_table(parent, variable.get(), table_parent, self.timeFilterCombo.get()))
         dateRb = tk.Radiobutton(parent, text='Date ', variable=variable, value='byDate', font=navFont,
-                                command=lambda: self.show_table(parent, variable.get(), df, table_parent))
+                                command=lambda: self.show_table(parent, variable.get(), table_parent, self.timeFilterCombo.get()))
         gradeRb.pack(side=tk.LEFT, padx=10, pady=10)
         dateRb.pack(side=tk.LEFT, padx=10)
+
+        timeLabel = tk.Label(parent, text='Time filter: ', font=navFont)
+        timeLabel.pack(side=tk.LEFT, padx=10)
+        comboValues = ["12 Months", "All Time"] + yearsList
+        self.get_comboList(parent, comboValues)
+
+
+    def get_comboList(self, parent, values):
+        self.timeFilterCombo = ttk.Combobox(parent, values=values, font=navFont, state='readonly')
+        parent.option_add('*TCombobox*Listbox.font', navFont)
+        self.timeFilterCombo.current(1)
+        # timeFilterCombo.bind("<<ComboboxSelected>>", lambda event: self.callbackFunc())
+        self.timeFilterCombo.bind("<<ComboboxSelected>>", lambda event: self.callbackFunc(self.timeFilterCombo.get()))
+
+        # print(dfObj.df)
+        self.timeFilterCombo.pack(side=tk.LEFT, padx=10)
+
+    def callbackFunc(self, value):
+        print(self.dfObj.df)
+        print(value)
+
+
 
 
     def get_table_header(self, parent, grade):
@@ -82,7 +111,9 @@ class LogbookFrame(tk.Frame):
                          anchor='w')
         label.grid(row=0, column=column, sticky='nsew')
 
-    def get_log_table(self, parent, variable, dataframe):
+    def get_log_table(self, parent, variable):
+
+        dataframe = self.dfObj.df
 
         if variable == 'byGrade':
             GRADES = ['8c', '8b+', '8b', '8a+', '8a', '7c+', '7c', '7b+', '7b', '7a+', '7a', '6c+', '6c', '6b+', '6b',
@@ -100,7 +131,7 @@ class LogbookFrame(tk.Frame):
                     bg = 0
                     for route in range(0, routesXGrade):
                         self.get_table_row(
-                            parent, dataframe, routeIndex[route], row, grade=False, bg=bg)
+                            parent, routeIndex[route], row, grade=False, bg=bg)
                         row += 1
                         bg += 1
         elif variable == 'byDate':
@@ -110,12 +141,14 @@ class LogbookFrame(tk.Frame):
             bg = 0
             routeIndex = dataframe.index.tolist()
             for route in range(0, dataframe.shape[0]):
-                self.get_table_row(parent, dataframe,
+                self.get_table_row(parent,
                                    routeIndex[route], row, grade=True, bg=bg)
                 row += 1
                 bg += 1
 
-    def get_table_row(self, parent, df, routeIndex, row, grade, bg):
+    def get_table_row(self, parent, routeIndex, row, grade, bg):
+        df = self.dfObj.df
+        
         if bg % 2 == 0:
             bg = tblGreyColor
         else:
