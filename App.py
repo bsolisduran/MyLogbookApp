@@ -2,11 +2,11 @@ import tkinter as tk
 
 from AscentWindow import AscentWindow
 from globals import *
+from LogbookFrame import LogbookFrame
 from NavFrame import NavFrame
 from RankingFrame import RankingFrame
 from StatisticsFrame import StatisticsFrame
 from TrendFrame import TrendFrame
-from LogbookFrame import LogbookFrame
 
 
 class MainApplication(tk.Frame):
@@ -26,9 +26,11 @@ class MainApplication(tk.Frame):
         self.canvas.create_window((4, 4), window=self.frame, anchor="nw",
                                   tags="self.frame")
         self.frame.bind("<Configure>", self.onFrameConfigure)
-        self.canvas.bind("<Enter>",     lambda event: self.canvas.focus_set())
-        self.canvas.bind("<Up>",    lambda event: self.canvas.yview_scroll(-1, "units"))
-        self.canvas.bind("<Down>",  lambda event: self.canvas.yview_scroll( 1, "units"))
+        self.canvas.bind("<Enter>", lambda event: self.canvas.focus_set())
+        self.canvas.bind(
+            "<Up>", lambda event: self.canvas.yview_scroll(-1, "units"))
+        self.canvas.bind(
+            "<Down>", lambda event: self.canvas.yview_scroll(1, "units"))
 
         self.canvas.focus_set()
 
@@ -38,7 +40,6 @@ class MainApplication(tk.Frame):
         self.statsframe = StatisticsFrame(self.frame)
         self.trendframe = TrendFrame(self.frame)
         self.logframe = LogbookFrame(self.frame)
-
 
         # Layout Main Widgets
         self.navbar.grid(row=0, column=0, rowspan=4, sticky='ne')

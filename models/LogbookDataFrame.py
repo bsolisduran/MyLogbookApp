@@ -1,6 +1,7 @@
-import pandas as pd
 import datetime as dt
+
 import numpy as np
+import pandas as pd
 
 
 class LogbookDataFrame:
@@ -78,7 +79,8 @@ class LogbookDataFrame:
         return yearsList
 
     def get_statsData(self, dataframe):
-        GRADES = ['8c', '8b+', '8b', '8a+', '8a', '7c+', '7c', '7b+', '7b', '7a+', '7a', '6c+', '6c', '6b+', '6b', '6a+', '6a']
+        GRADES = ['8c', '8b+', '8b', '8a+', '8a', '7c+', '7c', '7b+',
+                  '7b', '7a+', '7a', '6c+', '6c', '6b+', '6b', '6a+', '6a']
         countList = ()
         for grade in GRADES:
             gradeDf = dataframe[dataframe["grade"] == grade]
@@ -114,7 +116,8 @@ class LogbookDataFrame:
             else:
                 startDate = str(year) + "-01-01"
                 endDate = str(year) + "-12-31"
-                dataframe = df[(df["date"] > startDate) & (df["date"] < endDate)]
+                dataframe = df[(df["date"] > startDate)
+                               & (df["date"] < endDate)]
 
             points = self.get_top10score(dataframe)
             numRoutes = self.get_numRoutes(dataframe)
@@ -125,45 +128,42 @@ class LogbookDataFrame:
             scoreRoutesList.append(scoreRoutes)
 
         dataDict = {
-            "years" : yearsList,
-            "top10" : pointsList,
-            "numRoutes" : numRoutesList,
-            "scoreRoutes" : scoreRoutesList
+            "years": yearsList,
+            "top10": pointsList,
+            "numRoutes": numRoutesList,
+            "scoreRoutes": scoreRoutesList
         }
 
         return dataDict
-    
+
     def get_numRoutes(self, dataframe):
-        RPdf = dataframe[ dataframe["style"] == "RP" ]
-        Fldf = dataframe[ dataframe["style"] == "F" ]
-        OSdf = dataframe[ dataframe["style"] == "OS" ]
-        
+        RPdf = dataframe[dataframe["style"] == "RP"]
+        Fldf = dataframe[dataframe["style"] == "F"]
+        OSdf = dataframe[dataframe["style"] == "OS"]
+
         totalroutes = dataframe.shape[0]
         RProutes = RPdf.shape[0]
         Flroutes = Fldf.shape[0]
         OSroutes = OSdf.shape[0]
         numRoutes = [totalroutes, RProutes, Flroutes, OSroutes]
-        
+
         return numRoutes
 
     def get_scoreRoutes(self, dataframe):
-        RPdf = dataframe[ dataframe["style"] == "RP" ]
-        Fldf = dataframe[ dataframe["style"] == "F" ]
-        OSdf = dataframe[ dataframe["style"] == "OS" ]
-        
+        RPdf = dataframe[dataframe["style"] == "RP"]
+        Fldf = dataframe[dataframe["style"] == "F"]
+        OSdf = dataframe[dataframe["style"] == "OS"]
+
         scoreRoutes = []
         for data in [dataframe, RPdf, Fldf, OSdf]:
             df_temp = data
             pointsList = df_temp["points"].tolist()
             points = np.sum(np.asarray(pointsList))
             scoreRoutes.append(points)
-        
+
         return scoreRoutes
 
     def get_grade_df(self, grade):
         df = self.df
         grade_dataframe = df[df["grade"] == grade]
         return grade_dataframe
-
-
-

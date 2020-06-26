@@ -1,6 +1,6 @@
+import datetime as dt
 import tkinter as tk
 from tkinter import ttk
-import datetime as dt
 
 from globals import *
 from models.HeaderFrame import HeaderFrame
@@ -73,7 +73,8 @@ class LogbookFrame(tk.Frame):
         parent.option_add('*TCombobox*Listbox.font', navFont)
         self.timeFilterCombo.current(1)
         # self.timeFilterCombo.bind("<<ComboboxSelected>>", lambda event: self.callbackFunc(self.timeFilterCombo.get()))
-        self.timeFilterCombo.bind("<<ComboboxSelected>>", lambda event: self.show_table(table_parent))
+        self.timeFilterCombo.bind(
+            "<<ComboboxSelected>>", lambda event: self.show_table(table_parent))
 
         # print(dfObj.df)
         self.timeFilterCombo.pack(side=tk.LEFT, padx=10)
@@ -137,7 +138,6 @@ class LogbookFrame(tk.Frame):
                             parent, routeIndex[route], row, grade=False, bg=bg)
                         row += 1
                         bg += 1
-            
 
         elif variable == 'byDate':
             self.get_table_header(parent, grade=True)
