@@ -1,6 +1,7 @@
 import datetime as dt
 import tkinter as tk
 from tkinter import ttk
+import math
 
 from globals import *
 from models.HeaderFrame import HeaderFrame
@@ -130,7 +131,7 @@ class LogbookFrame(tk.Frame):
                 routeIndex = gradeDf.index.tolist()
                 routesXGrade = gradeDf.shape[0]
                 if routesXGrade > 0:
-                    self.insert_grade_header(parent, grade, row, False)
+                    self.get_grade_header(parent, grade, row, False)
                     row += 1
                     bg = 0
                     for route in range(0, routesXGrade):
@@ -200,20 +201,9 @@ class LogbookFrame(tk.Frame):
 
         # Comments:
         commentsText = df['com1'][routeIndex]
-        maxLength = 54
+        maxLength = 46
+        commentsText = self.split_comments(commentsText, maxLength)
 
-        if str(commentsText) == 'nan':          # no comments
-            commentsText = ' '
-        elif len(commentsText) > maxLength:     # long comment
-            if commentsText[maxLength] == " ":
-                commentsText = commentsText[:maxLength] + \
-                    "\n" + commentsText[maxLength + 1:]
-            elif commentsText[maxLength - 1] == " ":
-                commentsText = commentsText[:maxLength] + \
-                    "\n" + commentsText[maxLength:]
-            else:
-                commentsText = commentsText[:maxLength] + \
-                    "-\n" + commentsText[maxLength:]
         commentsLabel = tk.Label(
             parent, text=commentsText, font=tableIFont, anchor='w', justify='left', bg=bg, padx=5)
 
@@ -248,7 +238,7 @@ class LogbookFrame(tk.Frame):
             ratingLabel.grid(row=row, column=5, sticky='nsew')
             editLabel.grid(row=row, column=6, sticky='nsew')
 
-    def insert_grade_header(self, parent, text, row, grade):
+    def get_grade_header(self, parent, text, row, grade):
         gradeHeaderLabel = tk.Label(parent, text=text, font=tableBFont, justify='center',
                                     bg=darkGreyColor, pady=7)
         if grade:
@@ -257,3 +247,42 @@ class LogbookFrame(tk.Frame):
         else:
             gradeHeaderLabel.grid(
                 row=row, column=0, columnspan=8, sticky='nsew')
+
+
+    def split_comments(self, text, max_length):
+
+        if str(text) == "nan":  # no comments
+            new_text = ""
+            return new_text
+        
+        text_length = len(text)
+        if text_length > max_length:  # long comments
+            lines = math.ceil(text_length / max_length)
+            new_text = ""
+
+            ini = 0
+            end = max_length
+            for line in range(0,lines):
+                if line == lines - 1:
+                    new_text = new_text + text[ini:end]
+                else:
+                    # new_text = new_text + text[ini:end] + "\n"
+                    if text[end] == " ":
+                        new_text = new_text + text[ini:end] + "\n"
+                    elif text[end-1] == " ":
+                        new_text = new_text + text[ini:end-1] + "\n"
+                    elif text[end-2] == " ":
+                        new_text = new_text + text[ini:end-2] + "\n"
+                        ini -= 1
+                    else:
+                        new_text = new_text + text[ini:end] + "-\n"
+
+                ini = len(new_text)
+                end = ini + max_length
+
+                # ini += max_length
+                # end += max_length
+        else:
+            new_text = text
+
+        return new_text
