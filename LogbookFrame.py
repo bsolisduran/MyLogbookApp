@@ -1,7 +1,7 @@
 import datetime as dt
+import math
 import tkinter as tk
 from tkinter import ttk
-import math
 
 from globals import *
 from models.HeaderFrame import HeaderFrame
@@ -73,11 +73,8 @@ class LogbookFrame(tk.Frame):
             parent, values=values, font=navFont, state='readonly')
         parent.option_add('*TCombobox*Listbox.font', navFont)
         self.timeFilterCombo.current(1)
-        # self.timeFilterCombo.bind("<<ComboboxSelected>>", lambda event: self.callbackFunc(self.timeFilterCombo.get()))
         self.timeFilterCombo.bind(
             "<<ComboboxSelected>>", lambda event: self.show_table(table_parent))
-
-        # print(dfObj.df)
         self.timeFilterCombo.pack(side=tk.LEFT, padx=10)
 
     def callbackFunc(self, value):
@@ -121,8 +118,8 @@ class LogbookFrame(tk.Frame):
         variable = self.sortVar.get()
 
         if variable == 'byGrade':
-            GRADES = ['8c', '8b+', '8b', '8a+', '8a', '7c+', '7c', '7b+', '7b', '7a+', '7a', '6c+', '6c', '6b+', '6b',
-                      '6a+', '6a']
+            # GRADES = ['8c', '8b+', '8b', '8a+', '8a', '7c+', '7c', '7b+', '7b', '7a+', '7a', '6c+', '6c', '6b+', '6b',
+            #           '6a+', '6a']
 
             self.get_table_header(parent, False)
             row = 1
@@ -248,13 +245,12 @@ class LogbookFrame(tk.Frame):
             gradeHeaderLabel.grid(
                 row=row, column=0, columnspan=8, sticky='nsew')
 
-
     def split_comments(self, text, max_length):
 
         if str(text) == "nan":  # no comments
             new_text = ""
             return new_text
-        
+
         text_length = len(text)
         if text_length > max_length:  # long comments
             lines = math.ceil(text_length / max_length)
@@ -262,7 +258,7 @@ class LogbookFrame(tk.Frame):
 
             ini = 0
             end = max_length
-            for line in range(0,lines):
+            for line in range(0, lines):
                 if line == lines - 1:
                     new_text = new_text + text[ini:end]
                 else:
@@ -280,8 +276,6 @@ class LogbookFrame(tk.Frame):
                 ini = len(new_text)
                 end = ini + max_length
 
-                # ini += max_length
-                # end += max_length
         else:
             new_text = text
 
