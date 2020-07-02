@@ -37,7 +37,7 @@ class AscentWindow(tk.Toplevel):
         self.climbStyleCombo.grid(row=0, column=1, sticky='e')
 
         # -- Date Entry:
-        self.dateEntry = self.get_entry(default="dd/mm/yyyy")
+        self.dateEntry = self.get_date_entry(default="dd/mm/yyyy")
         self.dateEntry.grid(row=1, column=1, sticky='e')
         self.dateEntry.bind("<FocusIn>", lambda event: self.handle_focus_in())
         # self.dateEntry.bind("<FocusOut>", lambda event: self.validate())
@@ -51,6 +51,40 @@ class AscentWindow(tk.Toplevel):
         gradeValues = GRADES
         self.gradeCombo = self.get_comboBox(values=gradeValues, state='readonly', current=10)
         self.gradeCombo.grid(row=3, column=1, sticky='e')
+
+        # -- Name Entry:
+        self.nameEntry = self.get_entry()
+        self.nameEntry.grid(row=4, column=1, sticky='e')
+
+        # -- Crag Entry:
+        self.cragEntry = self.get_entry()
+        self.cragEntry.grid(row=5, column=1, sticky='e')
+        
+        # -- Sector Entry:
+        self.sectorEntry = self.get_entry()
+        self.sectorEntry.grid(row=6, column=1, sticky='e')
+
+        # -- Comments Text:
+        self.commentsText = tk.Text(self.mainFrame, height=3, width=50, font=numberFont)
+        self.commentsText.grid(row=7, column=1, sticky='e')
+
+        # -- Grade opinion:
+        self.gradeOpCombo = self.get_comboBox(values=["-", "Soft", "Hard"], state='readonly', current=0)
+        self.gradeOpCombo.grid(row=8, column=1, sticky='e')
+
+        # -- Tries:
+        self.triesEntry = self.get_entry()
+        self.triesEntry.grid(row=9, column=1, sticky='e')
+
+        # -- Recommended:
+        self.recommendedVar = tk.BooleanVar(value=False)
+        self.recommendedCheck = tk.Checkbutton(self.mainFrame, text=' Recommended', variable=self.recommendedVar)
+        self.recommendedCheck.grid(row=10, column=1, sticky='e')
+
+        # -- 2nd try:
+        self.secondGoVar = tk.BooleanVar(value=False)
+        self.secondGoVarCheck = tk.Checkbutton(self.mainFrame, text=' 2nd GO', variable=self.secondGoVar)
+        self.secondGoVarCheck.grid(row=11, column=1, sticky='e')
 
         # -- Add button:
         self.addButton = tk.Button(self, text='Add ascent', width=25, command=self.add_ascent)
@@ -71,27 +105,55 @@ class AscentWindow(tk.Toplevel):
         self.comboBox.current(current)
         return self.comboBox
 
-    def get_entry(self, default=None):
+    def get_entry(self, default=False):
         self.entry = tk.Entry(self.mainFrame, font=numberFont)
         self.entry.delete(0, tk.END)
-        if default:
-            self.entry.config(fg='grey')
-            self.entry.insert(0, default)
-
         return self.entry
 
-    # def handle_default(self, default):
-    #     self.entry.config(fg='grey')
-    #     self.entry.insert(0, default)
+
+    def get_date_entry(self, default):
+        self.dateEntry = tk.Entry(self.mainFrame, font=numberFont)
+        self.dateEntry.delete(0, tk.END)
+        self.dateEntry.config(fg='grey')
+        self.dateEntry.insert(0, default)
+        return self.dateEntry
 
     def handle_focus_in(self):
-        self.entry.delete(0, tk.END)
-        self.entry.config(fg='black')
+        self.dateEntry.delete(0, tk.END)
+        self.dateEntry.config(fg='black')
 
     def add_ascent(self):
-        print("ascent added!")
-        print(self.climbStyleCombo.get())
-        print(self.dateEntry.get())
+        
+        # get variables of the ascent:
+        climbStyle = self.climbStyleCombo.get()
+        date = self.dateEntry.get()
+        style = self.styleCombo.get()
+        grade = self.gradeCombo.get()
+        name = self.nameEntry.get()
+        crag = self.cragEntry.get()
+        sector = self.sectorEntry.get()
+        comments = self.commentsText.get("1.0", tk.END)
+        gradeOp = self.gradeOpCombo.get()
+        recommended = self.recommendedVar.get()
+        secondGo = self.secondGoVar.get()
+
+        # add to the database:
+        
+
+        # Print on terminal:
+        print("ascent added! \n\n")
+        print(f"Route/Boulder: \t {climbStyle}")
+        print(f"Date: \t\t {date}")
+        print(f"Style: \t\t {style}")
+        print(f"Grade: \t\t {grade}")
+        print(f"Name: \t\t {name}")
+        print(f"Crag: \t\t {crag}")
+        print(f"Sector: \t {sector}")
+        print(f"Comments: \t {comments}")
+        print(f"Grade opinion: \t {gradeOp}")
+        print(f"Recommended: \t {recommended}")
+        print(f"Second GO: \t {secondGo}")
+
 
     def close_window(self):
         self.destroy()
