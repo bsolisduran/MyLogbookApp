@@ -65,7 +65,7 @@ class AscentWindow(tk.Toplevel):
         self.sectorEntry.grid(row=6, column=1, sticky='e')
 
         # -- Comments Text:
-        self.commentsText = tk.Text(self.mainFrame, height=3, width=50, font=numberFont)
+        self.commentsText = tk.Text(self.mainFrame, height=3, width=38, font=numberFont)
         self.commentsText.grid(row=7, column=1, sticky='e')
 
         # -- Grade opinion:
@@ -138,7 +138,7 @@ class AscentWindow(tk.Toplevel):
         secondGo = self.secondGoVar.get()
 
         # add to the database:
-        
+
 
         # Print on terminal:
         print("ascent added! \n\n")
